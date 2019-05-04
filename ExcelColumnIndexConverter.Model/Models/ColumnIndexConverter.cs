@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Reactive.Bindings;
 
 namespace ExcelColumnIndexConverter.Model
 {
@@ -58,23 +57,17 @@ namespace ExcelColumnIndexConverter.Model
                 }
                 else
                 {
-                    value--;
-
                     var label = string.Empty;
 
                     var a = ColumnIndexConverter.AlphabetNum;
 
-                    var x = (ulong)Math.Floor(Math.Log(((value * (a - 1) / a) + 1), a));
-
-                    value -= (ulong)(((Math.Pow(a, x) - 1) * a) / (a - 1));
-
-                    for (var i = x + 1ul; value + i > 0; i--)
+                    while (value > 0)
                     {
-                        var c = (char)('A' + value % a);
+                        var c = (char)('A' + ((value - 1) % a));
 
                         label = $"{c}{label}";
 
-                        value /= a;
+                        value = (value - 1) / a;
                     }
 
                     return label;
