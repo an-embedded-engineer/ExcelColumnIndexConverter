@@ -33,7 +33,12 @@ namespace ExcelColumnIndexConverter.Model
 
                 foreach (var c in array)
                 {
-                    index += ((ulong)(c - 'A') + 1ul) * n;
+                    var x = (ulong)(c - 'A') + 1ul;
+
+                    var y = x * n;
+
+                    index += y;
+
                     n *= ColumnIndexConverter.AlphabetNum;
                 }
 
