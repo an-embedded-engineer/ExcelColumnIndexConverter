@@ -63,11 +63,13 @@ namespace ExcelColumnIndexConverter.Model
 
                     while (value > 0)
                     {
-                        var c = (char)('A' + ((value - 1) % a));
+                        value--;
+
+                        var c = (char)('A' + (value % a));
 
                         label = $"{c}{label}";
 
-                        value = (value - 1) / a;
+                        value /= a;
                     }
 
                     return label;
