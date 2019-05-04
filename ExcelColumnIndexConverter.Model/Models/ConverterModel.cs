@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -18,6 +19,10 @@ namespace ExcelColumnIndexConverter.Model
 
         public ReactiveProperty<string> OutputText { get; }
 
+        public ReactiveProperty<bool> HasError { get; }
+
+        public ReactiveProperty<string> ErrorMessage { get; }
+
         public ConverterModel()
         {
             this.InputType = new ReactiveProperty<string>("");
@@ -29,6 +34,28 @@ namespace ExcelColumnIndexConverter.Model
             this.OutputText = new ReactiveProperty<string>("").SetValidateNotifyError(x => this.ValidateOutput(x));
 
             this.InputText.Subscribe(_ => this.Convert());
+
+            this.HasError = new[]
+            {
+                this.InputText.ObserveHasErrors,
+            }
+            .CombineLatest(x =>
+            {
+                return x.FirstOrDefault();
+            }).ToReactiveProperty();
+
+            this.ErrorMessage = new[]
+            {
+                this.InputText.ObserveErrorChanged,
+            }
+            .CombineLatest(x =>
+            {
+                var result = x.Where(y => y != null)
+                              .Select(y => y.OfType<string>())
+                              .FirstOrDefault(y => y.Any());
+                return result == null ? null : result.FirstOrDefault();
+            })
+            .ToReactiveProperty();
         }
 
         private string ValidateInput(string x)

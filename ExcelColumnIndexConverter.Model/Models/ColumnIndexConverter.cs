@@ -52,7 +52,7 @@ namespace ExcelColumnIndexConverter.Model
             {
                 var value = ulong.Parse(index);
 
-                if (value < 0)
+                if (value <= 0)
                 {
                     throw new ArgumentException($"無効なインデックスです : {index}");
                 }

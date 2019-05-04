@@ -27,11 +27,18 @@ namespace ExcelColumnIndexConverter.CLI
                 {
                     converter.InputText.Value = input;
 
-                    Console.WriteLine($"Input Type : {converter.InputType.Value}");
+                    if(converter.HasError.Value != true)
+                    {
+                        Console.WriteLine($"Input Type : {converter.InputType.Value}");
 
-                    Console.WriteLine($"Output Type : {converter.OutputType.Value}");
+                        Console.WriteLine($"Output Type : {converter.OutputType.Value}");
 
-                    Console.WriteLine($"Output Text : {converter.OutputText.Value}");
+                        Console.WriteLine($"Output Text : {converter.OutputText.Value}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error : {converter.ErrorMessage.Value}");
+                    }
 
                     Console.WriteLine();
                 }
